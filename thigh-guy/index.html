@@ -2,8 +2,45 @@
 <head>
   <title>Thigh Guy Saves the Day</title>
   <styles>
+      /* Reset body and html to remove default margins and prevent scrolling */
+  body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #000; /* Dark background behind the canvas */
+    /* Prevent text selection while wildly clicking */
+    user-select: none; 
+  }
+  
+  /* Make the canvas fill the viewport */
+  #game-canvas {
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    
+    /* Use a basic crosshair, or set to 'none' if you render a custom crosshair inside the canvas */
+    cursor: crosshair; 
+    
+    /* Ensure crisp rendering for pixel art (optional, but good for retro FPS styles) */
+    image-rendering: pixelated; 
+  }
+  
+  /* Optional: If you want an HTML-based crosshair overlay instead of drawing it on the canvas */
+  #crosshair-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: limegreen;
+    font-size: 24px;
+    pointer-events: none; /* Crucial: allows mouse clicks to pass through to the canvas */
+    z-index: 10;
+  }
   </styles>
 </head>
 <body>
   <canvas id="game-canvas"></canvas>
+  <text id="crosshair-overlay">+</text>
 </body>
