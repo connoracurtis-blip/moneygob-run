@@ -104,6 +104,7 @@
   </script>
   
   <script type="module">
+    var inGame = false;
     import * as THREE from 'three';
     import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
 
@@ -125,8 +126,10 @@
     });
     
     function animate() {
-      requestAnimationFrame(animate);
-      renderer.render(scene, camera);
+      if (inGame) {
+        requestAnimationFrame(animate);
+        renderer.render(scene, camera);
+      }
     }
 
     function hideMenu() {
@@ -140,14 +143,34 @@
     function play() {
       hideMenu();
       lock();
+      var inGame = true;
       animate();
     }
-
+    function menu(type){
+        document.getElementById("crosshair-overlay").style.display = "none";
+      var inGame = false;
+        if (type == "esc"){
+          document.getElementById("title").innerHTML = "Where are you going?"
+          document.getElementById("info").innerHTML = "The game is paused. Leave it here if you want to come back later."
+          document.getElementById("play-button").innerHTML = "Come Back!"
+          document.getElementById("play-button").addEventListener("click", play);
+          
+        }
+    }
+    function fullscreenhandler(){
+      if (!document.getElementById("game-canvas").fullscreenElement){
+        menu("esc");
+      }
+      else{
+        hideMenu();
+      }
+    }
     // Attach the event listener inside the module
     document.getElementById("play-button").addEventListener("click", play);
+    document.getElementById("game-canvas").addEventListener("fullscreenchange", fullscreenhandler)
   </script>
   
-  <canvas id="game-canvas" onclick="lock();"></canvas>
+  <canvas id="game-canvas"></canvas>
   <div id="crosshair-overlay">+</div>
   <div id="menu">
     <h1 id="title">Thigh Guy Saves the Day</h1>
