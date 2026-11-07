@@ -161,7 +161,7 @@
     const sprites = [];
     for (const e of enemies) if (e.alive) sprites.push({ ...e, spriteType: "enemy" });
     for (const p of pickups) if (!p.taken) sprites.push({ ...p, spriteType: "pickup" });
-    sprites.push({ x: 7.5, y: 12.5, spriteType: "elevator" });
+    sprites.push({ x: 6.5, y: 12.5, spriteType: "elevator" });
     sprites.sort((a,b) => distanceSq(b.x,b.y) - distanceSq(a.x,a.y));
     for (const s of sprites) {
       const dx = s.x - player.x, dy = s.y - player.y;
@@ -173,7 +173,8 @@
       const screenX = (0.5 + rel / FOV) * w;
       const rayIndex = Math.max(0, Math.min(zBuffer.length - 1, Math.floor(screenX / w * zBuffer.length)));
       if (dist > zBuffer[rayIndex] + .2) continue;
-      const size = Math.min(h * 1.1, h / dist * (s.spriteType === "enemy" ? .68 : .28));
+      const scale = s.spriteType === "enemy" ? .68 : s.spriteType === "elevator" ? .75 : .28;
+      const size = Math.min(h * 1.1, h / dist * scale);
       const bottom = h / 2 + size * .48;
       if (s.spriteType === "elevator") {
     const ew = size * .65;
