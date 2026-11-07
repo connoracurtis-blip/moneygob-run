@@ -44,7 +44,7 @@
     makeEnemy(5.5, 12.5, "BIRD")
   ];
   const pickups = [
-    { x: 5.5, y: 1.5, type: "key", taken: false },
+    { x: 4.5, y: 2.5, type: "key", taken: false },
     { x: 11.5, y: 11.5, type: "ammo", taken: false },
     { x: 2.5, y: 10.5, type: "health", taken: false }
   ];
