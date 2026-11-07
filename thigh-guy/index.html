@@ -133,9 +133,13 @@
       document.getElementById("menu").style.display = "none";
       document.getElementById("crosshair-overlay").style.display = "inline";
     }
-
+    function lock(){
+      document.getElementById("game-canvas").requestPointerLock();
+      document.getElementById("game-canvas").requestFullscreen();
+    }
     function play() {
       hideMenu();
+      lock();
       animate();
     }
 
@@ -143,7 +147,7 @@
     document.getElementById("play-button").addEventListener("click", play);
   </script>
   
-  <canvas id="game-canvas"></canvas>
+  <canvas id="game-canvas" onclick="lock();"></canvas>
   <div id="crosshair-overlay">+</div>
   <div id="menu">
     <h1 id="title">Thigh Guy Saves the Day</h1>
