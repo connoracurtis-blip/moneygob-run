@@ -161,6 +161,7 @@
     const sprites = [];
     for (const e of enemies) if (e.alive) sprites.push({ ...e, spriteType: "enemy" });
     for (const p of pickups) if (!p.taken) sprites.push({ ...p, spriteType: "pickup" });
+    sprites.push({ x: 7.5, y: 12.5, spriteType: "elevator" });
     sprites.sort((a,b) => distanceSq(b.x,b.y) - distanceSq(a.x,a.y));
     for (const s of sprites) {
       const dx = s.x - player.x, dy = s.y - player.y;
@@ -174,7 +175,18 @@
       if (dist > zBuffer[rayIndex] + .2) continue;
       const size = Math.min(h * 1.1, h / dist * (s.spriteType === "enemy" ? .68 : .28));
       const bottom = h / 2 + size * .48;
-      if (s.spriteType === "pickup") {
+      if (s.spriteType === "elevator") {
+    const ew = size * .65;
+    const eh = size * 1.5;
+    ctx.fillStyle = "#333b42";
+    ctx.fillRect(screenX-ew/2, bottom-eh, ew, eh);
+    ctx.fillStyle = "#aab8bd";
+    ctx.fillRect(screenX-ew*.4, bottom-eh*.95, ew*.8, eh*.95);
+    ctx.fillStyle = "#26343b";
+    ctx.fillRect(screenX-ew*.32, bottom-eh*.88, ew*.64, eh*.84);
+    ctx.fillStyle = "#54e5d0";
+    ctx.fillRect(screenX-ew*.08, bottom-eh*.82, ew*.16, eh*.04);
+} else if (s.spriteType === "pickup") {
         const color = s.type === "key" ? "#e6d15d" : s.type === "ammo" ? "#d59b4b" : "#72c77a";
         ctx.fillStyle = color; ctx.fillRect(screenX - size*.18, bottom-size*.55, size*.36, size*.36);
         ctx.fillStyle = "#17191a"; ctx.fillRect(screenX-size*.12,bottom-size*.49,size*.24,size*.24);
