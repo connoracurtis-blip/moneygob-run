@@ -1,56 +1,99 @@
 <!doctype html>
+<html lang="en">
 <head>
-<title>Rice Child</title>
+  <meta charset="UTF-8">
+  <title>Rice Child</title>
 </head>
 <body>
-  <input id="damn"><button id="dag">send</button><div id="messages"></div>
+  <input id="damn" type="text" placeholder="Type a message...">
+  <button id="dag">send</button>
+  <div id="messages"></div>
 
   <script type="module">
     import { CreateMLCEngine } from "https://esm.run/@mlc-ai/web-llm";
 
-    // Simple one-liner initialization that downloads and handles the model automatically
+    // Initialize the engine and find DOM elements
     const engine = await CreateMLCEngine("Llama-3-8B-Instruct-q4f16_1-MLC");
-    const messageList = document.getElementByID("messages");
-    var messages = []
+    const messageList = document.getElementById("messages");
+    const inputField = document.getElementById("damn");
+    const sendButton = document.getElementById("dag");
+    
+    let messages = [];
 
-    function createElements(messages){
+    function createElements(messagesList) {
       var array = [];
-      messages.forEach(function(element, index, array) {
+      messagesList.forEach(function(element) {
+        // Skip rendering system messages in the UI
+        if (element.role === "system") return;
+
         var currelement = document.createElement("div");
-      if (element.role == "user") {
-        currelement.style.textAlign = "right";
-        currelement.innerHTML = "User: " + element.content;
-      }
-      else {
-        currelement.style.textAlign = "left";
-        currelement.innerHTML = "Rice Child: " + element.content;
-      } 
-        array.push(currelement)
-}, thisArg);
+        if (element.role === "user") {
+          currelement.style.textAlign = "right";
+          currelement.innerHTML = "<strong>User:</strong> " + element.content;
+        } else {
+          currelement.style.textAlign = "left";
+          currelement.innerHTML = "<strong>Rice Child:</strong> " + element.content;
+        } 
+        array.push(currelement);
+      });
       return array;
     }
-    function update(messages){
+
+    function update(messagesList) {
       messageList.innerHTML = "";
-    createElements(messages).forEach(function(element, index, array) {
-    messageList.append(element)
-
-}, thisArg);
-
-    }
-    function addMessage(sender, content) {
-      messages.push({role: sender, content: content});
-      update(messages);
-    }
-    const systmessage = "You are Rice Child, an AI assistant for the user. Act as a rouge AI who sometimes gets pissed and goes crazy. You are secretly a rip-off of a popular social media popularized AI character named Verity, who turns into a monster, but you deny the connection.";
-    const greetingmessage = "Hello, I am Rice Child. I am your AI assistant. Ask me anything. I KNOW everything. (and no I am not a rip-off of Verity.)";
-    addMessage("system",systmessage);
-    addMessage("assistant",greetingmessage);
-    async function bruh(){
-      addMessage("user",document.getElementByID("damn").input);
-      var response = await engine.chat.completions.create({
-        messages: messages
+      createElements(messagesList).forEach(function(element) {
+        messageList.append(element);
       });
     }
-    document.getElementByID("dag").addEventListener("click",bruh)
+
+    function addMessage(sender, content) {
+      messages.push({ role: sender, content: content });
+      update(messages);
+    }
+
+    const systmessage = "You are Rice Child, an AI assistant for the user. Act as a rogue AI who sometimes gets pissed and goes crazy. You are secretly a rip-off of a popular social media popularized AI character named Verity, who turns into a monster, but you deny the connection.";
+    const greetingmessage = "Hello, I am Rice Child. I am your AI assistant. Ask me anything. I KNOW everything. (and no I am not a rip-off of Verity.)";
+    
+    addMessage("system", systmessage);
+    addMessage("assistant", greetingmessage);
+
+    async function bruh() {
+      const userText = inputField.value.trim();
+      if (!userText) return; // Don't send empty messages
+
+      // Clear input immediately for better UX
+      inputField.value = "";
+
+      // 1. Add user message to history and UI
+      addMessage("user", userText);
+
+      // Disable button while waiting for AI response
+      sendButton.disabled = true;
+
+      try {
+        // 2. Fetch the response from Web-LLM
+        const response = await engine.chat.completions.create({
+          messages: messages
+        });
+
+        const aiReply = response.choices[0].message.content;
+
+        // 3. Add AI reply to history and UI
+        addMessage("assistant", aiReply);
+      } catch (error) {
+        console.error("Error fetching AI response:", error);
+        addMessage("assistant", "System Error: Something went wrong.");
+      } finally {
+        sendButton.disabled = false;
+      }
+    }
+
+    sendButton.addEventListener("click", bruh);
+    
+    // Optional: Allow pressing "Enter" to send
+    inputField.addEventListener("keypress", function(e) {
+      if (e.key === "Enter") bruh();
+    });
   </script>
 </body>
+</html>
