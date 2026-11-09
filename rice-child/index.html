@@ -43,7 +43,7 @@
     const greetingmessage = "Hello, I am Rice Child. I am your AI assistant. Ask me anything. I KNOW everything. (and no I am not a rip-off of Verity.)";
     addMessage("system",systmessage);
     addMessage("assistant",greetingmessage);
-    function bruh(){
+    async function bruh(){
       addMessage("user",document.getElementByID("damn").input);
       var response = await engine.chat.completions.create({
         messages: messages
