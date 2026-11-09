@@ -4,16 +4,10 @@
 </head>
 <body>
   <input id="damn"><button id="dag">send</button><div id="messages"></div>
-  <script type="importmap">
-  {
-    "imports": {
-      "@mlc-ai": "https://esm.run/@mlc-ai/web-llm"
-    }
-  }
-  </script>
 
   <script type="module">
-    import { CreateMLCEngine } from "@mlc-ai/web-llm";
+    import { CreateMLCEngine } from "https://esm.run/@mlc-ai/web-llm";
+
     // Simple one-liner initialization that downloads and handles the model automatically
     const engine = await CreateMLCEngine("Llama-3-8B-Instruct-q4f16_1-MLC");
     const messageList = document.getElementByID("messages");
