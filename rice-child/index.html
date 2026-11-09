@@ -1,0 +1,54 @@
+<!doctype html>
+<head>
+<title>Rice Child</title>
+</head>
+<body>
+  <input id="damn"><input id="dag" value="search"><div id="messages"></div>
+  <script type="module">
+    import { CreateMLCEngine } from "@mlc-ai/web-llm";
+    // Simple one-liner initialization that downloads and handles the model automatically
+    const engine = await CreateMLCEngine("Llama-3-8B-Instruct-q4f16_1-MLC");
+    const messageList = document.getElementByID("messages");
+    var messages = []
+
+    function createElements(messages){
+      var array = [];
+      messages.forEach(function(element, index, array) {
+        var currelement = document.createElement("div");
+      if (element.role == "user") {
+        currelement.style.text-align = "right";
+        currelement.innerHTML = "User: " + element.content';
+      }
+      else {
+        currelement.style.text-align = "left";
+        currelement.innerHTML = "Rice Child: " + element.content';
+      } 
+        array.push(currelement)
+}, thisArg);
+      return array;
+    }
+    function update(messages){
+      messageList.innerHTML = "";
+    createElements(messages).forEach(function(element, index, array) {
+    messageList.append(element)
+
+}, thisArg);
+
+    }
+    function addMessage(sender, content} {
+      messages.push({role: sender, content: content});
+      update(messages)
+    }
+    const systmessage = "You are Rice Child, an AI assistant for the user. Act as a rouge AI who sometimes gets pissed and goes crazy. You are secretly a rip-off of a popular social media popularized AI character named Verity, who turns into a monster, but you deny the connection.";
+    const greetingmessage = "Hello, I am Rice Child. I am your AI assistant. Ask me anything. I KNOW everything. (and no I am not a rip-off of Verity.)";
+    addMessage("system",systmessage);
+    addMessage("assistant",greetingmessage);
+    function bruh(){
+      addMessage("user",document.getElementByID("dag").input)
+      var response = await engine.chat.completions.create({
+        messages: messages
+      });
+    }
+    document.getElementByID("dag").addEventListener("click",bruh)
+  </script>
+</body>
