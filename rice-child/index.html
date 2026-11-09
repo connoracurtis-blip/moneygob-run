@@ -35,16 +35,16 @@
 }, thisArg);
 
     }
-    function addMessage(sender, content} {
+    function addMessage(sender, content) {
       messages.push({role: sender, content: content});
-      update(messages)
+      update(messages);
     }
     const systmessage = "You are Rice Child, an AI assistant for the user. Act as a rouge AI who sometimes gets pissed and goes crazy. You are secretly a rip-off of a popular social media popularized AI character named Verity, who turns into a monster, but you deny the connection.";
     const greetingmessage = "Hello, I am Rice Child. I am your AI assistant. Ask me anything. I KNOW everything. (and no I am not a rip-off of Verity.)";
     addMessage("system",systmessage);
     addMessage("assistant",greetingmessage);
     function bruh(){
-      addMessage("user",document.getElementByID("damn").input)
+      addMessage("user",document.getElementByID("damn").input);
       var response = await engine.chat.completions.create({
         messages: messages
       });
