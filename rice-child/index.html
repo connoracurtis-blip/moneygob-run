@@ -3,7 +3,7 @@
 <title>Rice Child</title>
 </head>
 <body>
-  <input id="damn"><input id="dag" value="search"><div id="messages"></div>
+  <input id="damn"><button id="dag">send</button><div id="messages"></div>
   <script type="module">
     import { CreateMLCEngine } from "@mlc-ai/web-llm";
     // Simple one-liner initialization that downloads and handles the model automatically
@@ -16,11 +16,11 @@
       messages.forEach(function(element, index, array) {
         var currelement = document.createElement("div");
       if (element.role == "user") {
-        currelement.style.text-align = "right";
+        currelement.style.textAlign = "right";
         currelement.innerHTML = "User: " + element.content';
       }
       else {
-        currelement.style.text-align = "left";
+        currelement.style.textAlign = "left";
         currelement.innerHTML = "Rice Child: " + element.content';
       } 
         array.push(currelement)
@@ -44,7 +44,7 @@
     addMessage("system",systmessage);
     addMessage("assistant",greetingmessage);
     function bruh(){
-      addMessage("user",document.getElementByID("dag").input)
+      addMessage("user",document.getElementByID("damn").input)
       var response = await engine.chat.completions.create({
         messages: messages
       });
